@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MidtransController;
 
 // --- FRONTEND (Halaman Utama) ---
 Route::get('/', [ProductController::class, 'showHomePage'])->name('home');

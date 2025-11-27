@@ -7,6 +7,8 @@
     <title>KKM Esports Merchandise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body class="bg-[#1f1c1c] text-gray-800">
@@ -73,6 +75,78 @@
 
     {{-- === SCRIPTS GLOBAL === --}}
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const checkoutBtn = document.getElementById("checkoutBtn");
+            const token = document.querySelector('meta[name="csrf-token"]').content;
+
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener("click", function() {
+
+                    // Ambil cart dari localStorage
+                    let cart = JSON.parse(localStorage.getItem("kkm_cart") || "[]");
+
+                    if (cart.length === 0) {
+                        alert("Keranjang masih kosong!");
+                        return;
+                    }
+
+                    // Hitung total
+                    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+                    // === kirim total + cart ke laravel ===
+                    fetch("/pay", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": token,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                total: total,
+                                cart: cart
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+
+                            if (!data.snap_token) {
+                                alert("Gagal membuat transaksi (snap_token kosong)");
+                                console.error(data);
+                                return;
+                            }
+
+                            // Panggil Midtrans Popup
+                            snap.pay(data.snap_token, {
+                                onSuccess: function(result) {
+                                    alert("Pembayaran berhasil!");
+                                    localStorage.removeItem("kkm_cart");
+                                },
+                                onPending: function(result) {
+                                    alert("Menunggu pembayaran...");
+                                },
+                                onError: function(result) {
+                                    alert("Pembayaran gagal!");
+                                },
+                                onClose: function() {
+                                    alert("Popup ditutup.");
+                                }
+                            });
+
+                        })
+                        .catch(err => {
+                            console.error("Fetch error:", err);
+                            alert("Gagal membuat transaksi.");
+                        });
+                });
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>

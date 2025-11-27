@@ -153,3 +153,50 @@ window.addEventListener('DOMContentLoaded', () => {
   window.updateCartCount = updateCartCount;
   window.openCart = openCart;
 });
+
+// =========================
+// HERO SLIDER (ANIMATED SLIDE VERSION)
+// =========================
+
+const heroSlider = document.getElementById("heroSlider");
+const prevSlide = document.getElementById("prevSlide");
+const nextSlide = document.getElementById("nextSlide");
+
+if (heroSlider) {
+
+    const totalSlides = heroSlider.children.length;
+    let index = 0;
+
+    function updateSlide() {
+        heroSlider.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    // Auto slide
+    let autoPlay = setInterval(() => {
+        index = (index + 1) % totalSlides;
+        updateSlide();
+    }, 5000);
+
+    // Tombol next
+    nextSlide?.addEventListener("click", () => {
+        index = (index + 1) % totalSlides;
+        updateSlide();
+        resetAuto();
+    });
+
+    // Tombol prev
+    prevSlide?.addEventListener("click", () => {
+        index = (index - 1 + totalSlides) % totalSlides;
+        updateSlide();
+        resetAuto();
+    });
+
+    function resetAuto() {
+        clearInterval(autoPlay);
+        autoPlay = setInterval(() => {
+            index = (index + 1) % totalSlides;
+            updateSlide();
+        }, 5000);
+    }
+}
+

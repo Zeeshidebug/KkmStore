@@ -9,15 +9,16 @@ class Product extends Model
 {
     use HasFactory;
 
+    // PENTING: Kita izinkan semua kolom ini diisi
     protected $fillable = [
         'name',
-        'sku',
+        'sku',          // <-- Pastikan ini ada
         'price',
-        'image',
-        'description',
-        'tags',
-        'sizes',
         'stock',
-        'rating',
+        'image',        // <-- Pastikan ini 'image' (sesuai database temanmu), bukan 'image_path'
+        'sizes',        // <-- Kolom baru
+        'tags',         // <-- Kolom baru
+        'rating',       // <-- Kolom baru
+        'description',  // <-- Kolom baru
     ];
 }

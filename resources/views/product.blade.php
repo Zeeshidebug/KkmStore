@@ -6,7 +6,7 @@
     {{-- Bagian gambar produk --}}
     <div>
       <div class="rounded-2xl overflow-hidden bg-[#1f1c1c] shadow">
-        <img src="{{ $product->image }}"
+        <img src="{{ asset('storage/' . $product->image) }}"
           alt="{{ $product->name }}"
           class="w-full h-96 object-cover" id="mainImage">
       </div>

@@ -1,27 +1,49 @@
 @extends('layout')
 
 @section('content')
-<!-- HERO -->
+
 <main>
-    <section class="bg-gradient-to-r from-yellow-400 to-amber-600 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-            <div class="md:flex md:items-center md:justify-between">
-                <div class="max-w-2xl">
-                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Store Resmi Tim Esports KKM</h1>
-                    <p class="mt-4 text-lg opacity-90">
-                        Merch resmi — kaos, hoodie, topi, dan barang koleksi. Dukunganmu membantu tim terus berkembang!
-                    </p>
-                    <div class="mt-6 flex gap-3">
-                        <a href="#products" class="inline-flex items-center px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md shadow hover:opacity-95">Jelajahi Merch</a>
-                        <a href="#about" class="inline-flex items-center px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md shadow hover:opacity-95">Tentang KKM</a>
-                    </div>
-                </div>
-                <div class="hidden md:block mt-8 md:mt-0">
-                    <img src="{{ asset('assets/kkmlogoai.png') }}" alt="KKM merch preview" class="shadow-2xl w-[450px] h-[250px] object-cover rounded-lg" />
+    <section class="relative h-[450px] md:h-[550px] overflow-hidden">
+
+        <!-- Wrapper slider -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div id="heroSlider" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+                <img src="/assets/furina6.jpg" class="w-full h-full object-cover flex-shrink-0">
+                <img src="/assets/wood.jpg" class="w-full h-full object-cover flex-shrink-0">
+                <img src="/assets/tachon.jpg" class="w-full h-full object-cover flex-shrink-0">
+                <img src="/assets/backroundhoror.jpg" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+        </div>
+
+        <!-- Overlay gelap -->
+        <div class="absolute inset-0 bg-black/40"></div>
+
+        <!-- HERO content tetap sama -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+            <div class="max-w-2xl text-white">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Store Resmi Tim Esports KKM</h1>
+                <p class="mt-4 text-lg opacity-90">Merch resmi — kaos, hoodie, topi, dan barang koleksi. Dukunganmu membantu tim terus berkembang!</p>
+                <div class="mt-6 flex gap-3">
+                    <a href="#products" class="px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md shadow">Jelajahi Merch</a>
+                    <a href="#about" class="px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md shadow">Tentang KKM</a>
                 </div>
             </div>
         </div>
+
+        <!-- Tombol prev -->
+        <button id="prevSlide"
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 p-3 rounded-full text-white text-2xl">
+            ‹
+        </button>
+
+        <!-- Tombol next -->
+        <button id="nextSlide"
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 p-3 rounded-full text-white text-2xl">
+            ›
+        </button>
+
     </section>
+
 
     <!-- PRODUCTS -->
     <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -29,7 +51,7 @@
         <div id="productsGrid" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($products as $p)
             <div class="bg-[#2a2727] rounded-lg overflow-hidden shadow hover:shadow-lg transition">
-                <img src="{{ $p->image }}" alt="{{ $p->name }}" class="w-full h-56 object-cover">
+                <img src="{{ asset('storage/' . $p->image) }}" alt="{{ $p->name }}" class="w-full h-56 object-cover">
                 <div class="p-4 text-white">
                     <h3 class="font-semibold">{{ $p->name }}</h3>
                     <p class="text-yellow-400 font-bold mt-1">Rp{{ number_format($p->price) }}</p>

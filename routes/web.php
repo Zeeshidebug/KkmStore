@@ -13,3 +13,4 @@ Route::get('/admin', [ProductController::class, 'index'])->name('admin.index');
 Route::post('/admin/store', [ProductController::class, 'store'])->name('admin.store');
 Route::post('/admin/update/{id}', [ProductController::class, 'update'])->name('admin.update');
 Route::delete('/admin/destroy/{id}', [ProductController::class, 'destroy'])->name('admin.destroy');
+Route::post('/pay', [MidtransController::class, 'makePayment'])->name('pay');
